@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Script Catalog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-purple: #8b5cf6;
+            --accent-magenta: #ec4899;
+            --accent-blue: #3b82f6;
+            --border-color: #333;
+        }
+
+        body.light-mode header {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+        }
+
+        body.light-mode nav {
+            background: rgba(245, 245, 245, 0.4);
+        }
+
+        body.light-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e5e5e5;
+            --text-primary: #0a0a0a;
+            --text-secondary: #4a4a4a;
+            --border-color: #d0d0d0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .header-nav a, .header-nav button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .header-nav a:hover, .header-nav button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1), transparent);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-purple);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .install-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .install-step {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .install-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-magenta));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .install-step:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-purple);
+        }
+
+        .install-step:hover::before {
+            transform: scaleX(1);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .disclaimer {
+            max-width: 800px;
+            margin: 3rem auto 0;
+            padding: 1.5rem;
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .disclaimer-title {
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .disclaimer-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .faq-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .faq-question h3 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+
+        .faq-toggle {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s, padding 0.3s;
+            padding: 0 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .features-grid, .install-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Discord Script Catalog</h1>
+        <p class="tagline">Automate. Customize. Dominate your server experience.</p>
+        <div class="header-nav">
+            <a onclick="scrollToSection('about')">About</a>
+            <a onclick="scrollToSection('features')">Features</a>
+            <a onclick="scrollToSection('install')">Get Started</a>
+            <a onclick="scrollToSection('faq')">FAQ</a>
+            <button onclick="toggleTheme()">🌓 Theme</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="about">
+            <h2>About</h2>
+            <div class="about-content">
+                <p>Welcome to the Discord Script Catalog, your ultimate hub for automation and customization tools designed to elevate your Discord experience. Whether you're managing a bustling community server or just want to personalize your daily interactions, our collection of scripts empowers you to automate repetitive tasks, add visual flair, and create engaging interactions without writing a single line of code.</p>
+                <p style="margin-top: 1rem;">Our scripts are built with simplicity and power in mind. From timed announcements to instant emoji reactions, every tool is crafted to save you time and enhance your server's personality.</p>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2>Features</h2>
+            <p class="section-subtitle">Powerful tools to transform your Discord experience</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad1)" stroke-width="8"/>
+                        <path d="M50 20 L50 50 L70 50" stroke="url(#grad1)" stroke-width="6" stroke-linecap="round" fill="none"/>
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h3>Timed Message Automation</h3>
+                    <p>Schedule announcements, reminders, and recurring messages with precision timing. Perfect for event notifications, daily motivational quotes, or automated server updates that keep your community engaged without manual intervention.</p>
+                </div>
+
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="35" fill="none" stroke="url(#grad2)" stroke-width="8"/>
+                        <path d="M30 50 L45 65 L70 40" stroke="url(#grad2)" stroke-width="6" stroke-linecap="round" fill="none"/>
+                        <defs>
+                            <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h3>Auto Reactions</h3>
+                    <p>Instantly add emoji reactions to messages based on keywords or apply them to every message automatically. Create fun interactive experiences, highlight important announcements, or add personality to your channels effortlessly.</p>
+                </div>
+
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="15" y="15" width="70" height="70" rx="10" fill="none" stroke="url(#grad3)" stroke-width="8"/>
+                        <circle cx="35" cy="35" r="8" fill="url(#grad3)"/>
+                        <path d="M15 70 L35 50 L50 65 L85 30" stroke="url(#grad3)" stroke-width="5" stroke-linecap="round" fill="none"/>
+                        <defs>
+                            <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h3>Custom Backgrounds</h3>
+                    <p>Transform your Discord interface with personalized visual themes. Apply custom backgrounds, color schemes, and visual effects to make your Discord experience uniquely yours while maintaining full functionality.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="install">
+            <h2>Get Started</h2>
+            <p class="section-subtitle">Install and start using scripts in minutes</p>
+            <div class="install-steps">
+                <div class="install-step">
+                    <div class="step-number">1</div>
+                    <h3>Install Manager</h3>
+                    <p>Download a userscript manager like Tampermonkey or Violentmonkey for your browser.</p>
+                </div>
+                <div class="install-step">
+                    <div class="step-number">2</div>
+                    <h3>Choose Script</h3>
+                    <p>Browse our catalog and select the scripts that fit your needs and workflow.</p>
+                </div>
+                <div class="install-step">
+                    <div class="step-number">3</div>
+                    <h3>Install & Enjoy</h3>
+                    <p>Click install, customize your settings, and watch your Discord transform instantly.</p>
+                </div>
+            </div>
+            
+            <div class="disclaimer">
+                <p class="disclaimer-title">⚠️ Important Disclaimer</p>
+                <p class="disclaimer-text">Some scripts may be against Discord's Terms of Service. By using these scripts, you acknowledge and agree that you do so at your own risk. I am not responsible for any account terminations, suspensions, or other consequences that may result from using these scripts.</p>
+            </div>
+        </section>
+
+        <section id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <p class="section-subtitle">Everything you need to know</p>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>How do I install these scripts?</h3>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Installing scripts is simple. First, install a userscript manager extension like Tampermonkey or Violentmonkey in your browser. Then, click on any script link from our catalog and the manager will prompt you to install it. Once installed, the script will automatically run when you open Discord in your browser.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Are these scripts safe to use?</h3>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>All scripts in our catalog are thoroughly tested and designed with security in mind. They only modify your local Discord experience and don't access or transmit any sensitive data. However, always review scripts before installation and only use trusted userscript managers.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Can I customize the scripts?</h3>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! Each script comes with customizable settings that you can adjust directly in your userscript manager. You can modify timings, keywords, colors, and other parameters to match your preferences without any coding knowledge.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Do I need coding knowledge?</h3>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Not at all! Our scripts are designed for everyone. Simply install them through your userscript manager and adjust the settings through user-friendly interfaces. No programming experience required.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Will these work on mobile?</h3>
+                    <span class="faq-toggle">▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p>These scripts are designed for desktop browsers where userscript managers are supported. Mobile browsers have limited support for userscripts, so we recommend using these tools on your desktop or laptop for the best experience.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Discord Script Catalog. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            faqItem.classList.toggle('active');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+    </script>
+</body>
+</html>
